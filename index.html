@@ -22,6 +22,7 @@
   --amber-2: #fbbf24;
   --green: #00d4a4;
   --purple: #a78bfa;
+  --pink: #f06292;
   --font-disp: 'Sora','Noto Sans SC',sans-serif;
   --font-body: 'Space Grotesk','Noto Sans SC',sans-serif;
   --font-mono: 'JetBrains Mono',monospace;
@@ -36,8 +37,8 @@ html, body {
 }
 body {
   background:
-    radial-gradient(ellipse at 15% 10%, rgba(79,127,255,.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 60%, rgba(245,158,11,.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 10%, rgba(79,127,255,.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 60%, rgba(245,158,11,.08) 0%, transparent 50%),
     var(--bg);
   min-height: 100vh;
 }
@@ -52,35 +53,30 @@ body {
   padding: 14px clamp(1.5rem, 4vw, 3rem);
 }
 .topbar-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: .06em;
+  font-size: 12px; letter-spacing: .06em;
   color: var(--text-mute);
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-wrap: wrap; gap: 1rem;
 }
 .topbar-inner .brand {
-  color: var(--text);
-  font-weight: 700;
-  letter-spacing: .08em;
+  color: var(--text); font-weight: 700; letter-spacing: .08em;
 }
 .topbar-inner .brand .dot {
   display: inline-block; width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--amber);
+  border-radius: 50%; background: var(--blue);
   margin-right: 8px;
-  box-shadow: 0 0 10px var(--amber);
+  box-shadow: 0 0 10px var(--blue);
+  animation: pulse 2.4s ease-in-out infinite;
 }
-.topbar-inner .meta { color: var(--text-mute); text-transform: uppercase; }
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: .55; }
+}
 
 main {
-  max-width: 1280px;
-  margin: 0 auto;
+  max-width: 1280px; margin: 0 auto;
   padding: clamp(2rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem);
 }
 
@@ -115,8 +111,8 @@ main {
 .hero-sub {
   font-size: clamp(1rem, 1.5vw, 1.3rem);
   color: var(--text-dim);
-  max-width: 720px;
-  line-height: 1.6;
+  max-width: 760px;
+  line-height: 1.65;
   margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 .hero-stats {
@@ -143,8 +139,7 @@ main {
 }
 
 .section-head {
-  display: flex;
-  align-items: baseline;
+  display: flex; align-items: baseline;
   gap: clamp(1rem, 2vw, 1.5rem);
   margin-bottom: clamp(2rem, 4vw, 3rem);
   margin-top: clamp(3rem, 6vw, 5rem);
@@ -154,7 +149,7 @@ main {
 .section-head .idx {
   font-family: var(--font-mono);
   font-size: clamp(11px, 1vw, 13px);
-  color: var(--amber-2);
+  color: var(--blue-2);
   letter-spacing: .1em;
 }
 .section-head h2 {
@@ -172,11 +167,13 @@ main {
   text-transform: uppercase;
 }
 
-.skills {
+/* ============ 卡片(通用模板) ============ */
+.skills-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: clamp(1.5rem, 3vw, 2rem);
 }
+
 .skill-card {
   background: var(--bg-2);
   border: 1px solid var(--line);
@@ -184,23 +181,30 @@ main {
   padding: clamp(1.5rem, 3vw, 2.5rem);
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
   min-height: 480px;
   transition: transform .3s ease, border-color .3s ease;
 }
 .skill-card::before {
   content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
+  position: absolute; inset: 0 0 auto 0;
   height: 5px;
 }
-.skill-card.s-amber::before {
-  background: linear-gradient(90deg, var(--amber), var(--amber-2), #ff8c42);
-}
-.skill-card:hover { transform: translateY(-4px); }
-.skill-card.s-amber:hover { border-color: rgba(245,158,11,.4); }
+/* 颜色变体 */
+.skill-card.c-amber::before { background: linear-gradient(90deg, var(--amber), var(--amber-2), #ff8c42); }
+.skill-card.c-blue::before { background: linear-gradient(90deg, var(--blue), var(--blue-2), var(--purple)); }
+.skill-card.c-green::before { background: linear-gradient(90deg, var(--green), #38e1b8, #00b894); }
+.skill-card.c-pink::before { background: linear-gradient(90deg, var(--pink), #f48fb1, #ec407a); }
+.skill-card.c-purple::before { background: linear-gradient(90deg, var(--purple), #c4b5fd, #8b5cf6); }
 
+.skill-card:hover { transform: translateY(-4px); }
+.skill-card.c-amber:hover { border-color: rgba(245,158,11,.4); }
+.skill-card.c-blue:hover { border-color: rgba(79,127,255,.4); }
+.skill-card.c-green:hover { border-color: rgba(0,212,164,.4); }
+.skill-card.c-pink:hover { border-color: rgba(240,98,146,.4); }
+.skill-card.c-purple:hover { border-color: rgba(167,139,250,.4); }
+
+/* placeholder 卡片(预留新 skill 位置) */
 .skill-card.placeholder {
   background: transparent;
   border-style: dashed;
@@ -209,8 +213,6 @@ main {
   justify-content: center;
   text-align: center;
   gap: .75rem;
-  display: flex;
-  flex-direction: column;
 }
 .skill-card.placeholder:hover {
   transform: none;
@@ -246,9 +248,7 @@ main {
 }
 
 .skill-head {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
+  display: flex; align-items: center; gap: .75rem;
   margin-bottom: 1.25rem;
 }
 .skill-num {
@@ -259,10 +259,12 @@ main {
   padding: 5px 11px;
   border-radius: 6px;
 }
-.s-amber .skill-num {
-  background: rgba(245,158,11,.15);
-  color: var(--amber-2);
-}
+.c-amber .skill-num { background: rgba(245,158,11,.15); color: var(--amber-2); }
+.c-blue .skill-num { background: rgba(79,127,255,.15); color: var(--blue-2); }
+.c-green .skill-num { background: rgba(0,212,164,.15); color: var(--green); }
+.c-pink .skill-num { background: rgba(240,98,146,.15); color: var(--pink); }
+.c-purple .skill-num { background: rgba(167,139,250,.15); color: var(--purple); }
+
 .skill-tag {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -270,41 +272,43 @@ main {
   color: var(--text-mute);
   text-transform: uppercase;
 }
-.skill-name {
+.skill-id {
   font-family: var(--font-mono);
   font-size: clamp(.95rem, 1.2vw, 1.1rem);
-  color: var(--amber-2);
   margin-bottom: .85rem;
   word-break: break-all;
 }
+.c-amber .skill-id { color: var(--amber-2); }
+.c-blue .skill-id { color: var(--blue-2); }
+.c-green .skill-id { color: var(--green); }
+.c-pink .skill-id { color: var(--pink); }
+.c-purple .skill-id { color: var(--purple); }
+
 .skill-title {
   font-family: var(--font-disp);
-  font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.15;
   letter-spacing: -0.02em;
   margin-bottom: 1rem;
   color: var(--text);
 }
 .skill-desc {
-  font-size: clamp(.92rem, 1.1vw, 1.02rem);
+  font-size: clamp(.9rem, 1.08vw, 1rem);
   color: var(--text-dim);
   line-height: 1.65;
   margin-bottom: 1.5rem;
 }
-.skill-desc strong { color: var(--text); font-weight: 600; }
 
 .skill-features {
   list-style: none;
   padding: 0;
-  margin: 0 0 1.75rem;
+  margin: 0 0 1.5rem;
   display: grid;
-  gap: .6rem;
+  gap: .55rem;
 }
 .skill-features li {
-  display: flex;
-  align-items: flex-start;
-  gap: .65rem;
+  display: flex; align-items: flex-start; gap: .65rem;
   font-size: clamp(.85rem, 1vw, .95rem);
   color: var(--text-dim);
   line-height: 1.5;
@@ -316,21 +320,42 @@ main {
   border-radius: 50%;
   margin-top: .55em;
 }
-.s-amber .skill-features li::before { background: var(--amber); }
-.skill-features li strong { color: var(--text); font-weight: 600; }
+.c-amber .skill-features li::before { background: var(--amber); }
+.c-blue .skill-features li::before { background: var(--blue); }
+.c-green .skill-features li::before { background: var(--green); }
+.c-pink .skill-features li::before { background: var(--pink); }
+.c-purple .skill-features li::before { background: var(--purple); }
+
+.skill-trigger {
+  font-family: var(--font-mono);
+  font-size: clamp(.8rem, .92vw, .88rem);
+  color: var(--text-dim);
+  background: var(--bg-3);
+  padding: .65rem .9rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+  border-left: 3px solid;
+}
+.c-amber .skill-trigger { border-left-color: var(--amber); }
+.c-blue .skill-trigger { border-left-color: var(--blue); }
+.c-green .skill-trigger { border-left-color: var(--green); }
+.c-pink .skill-trigger { border-left-color: var(--pink); }
+.c-purple .skill-trigger { border-left-color: var(--purple); }
+.skill-trigger::before {
+  content: '$ ';
+  color: var(--green);
+  font-weight: 700;
+}
 
 .skill-actions {
   margin-top: auto;
-  display: flex;
-  gap: .75rem;
+  display: flex; gap: .75rem;
   flex-wrap: wrap;
   padding-top: 1.25rem;
   border-top: 1px solid var(--line);
 }
 .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: .55rem;
+  display: inline-flex; align-items: center; gap: .55rem;
   padding: .75rem 1.25rem;
   border-radius: 10px;
   font-family: var(--font-mono);
@@ -342,14 +367,32 @@ main {
   cursor: pointer;
 }
 .btn.primary { color: #fff; }
-.s-amber .btn.primary {
+.c-amber .btn.primary {
   background: linear-gradient(135deg, var(--amber), var(--amber-2));
   box-shadow: 0 4px 14px rgba(245,158,11,.3);
   color: #2a1a00;
 }
-.s-amber .btn.primary:hover {
-  box-shadow: 0 6px 20px rgba(245,158,11,.45);
+.c-blue .btn.primary {
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  box-shadow: 0 4px 14px rgba(79,127,255,.3);
+}
+.c-green .btn.primary {
+  background: linear-gradient(135deg, var(--green), #38e1b8);
+  box-shadow: 0 4px 14px rgba(0,212,164,.3);
+  color: #002b22;
+}
+.c-pink .btn.primary {
+  background: linear-gradient(135deg, var(--pink), #f48fb1);
+  box-shadow: 0 4px 14px rgba(240,98,146,.3);
+}
+.c-purple .btn.primary {
+  background: linear-gradient(135deg, var(--purple), #c4b5fd);
+  box-shadow: 0 4px 14px rgba(167,139,250,.3);
+  color: #1a0b3d;
+}
+.btn.primary:hover {
   transform: translateY(-1px);
+  filter: brightness(1.08);
 }
 .btn.ghost {
   color: var(--text-dim);
@@ -382,7 +425,7 @@ main {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: .1em;
-  color: var(--amber-2);
+  color: var(--blue-2);
   margin-bottom: .75rem;
   text-transform: uppercase;
 }
@@ -403,34 +446,37 @@ main {
   padding: 2px 7px;
   border-radius: 4px;
   font-size: .9em;
-  color: var(--amber-2);
+  color: var(--blue-2);
 }
 
 footer {
   margin-top: clamp(3rem, 6vw, 5rem);
   padding-top: clamp(1.5rem, 2.5vw, 2rem);
   border-top: 1px solid var(--line);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex; justify-content: space-between; align-items: center;
   font-family: var(--font-mono);
   font-size: 11.5px;
   color: var(--text-mute);
   letter-spacing: .04em;
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-wrap: wrap; gap: 1rem;
 }
 footer .right { display: flex; gap: 1.5rem; }
 
+/* Loading 状态 */
+.loading {
+  text-align: center;
+  padding: 4rem 0;
+  font-family: var(--font-mono);
+  color: var(--text-mute);
+}
+
 @media (max-width: 900px) {
   .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
-  .skills { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
   .quickstart { grid-template-columns: 1fr; }
   .qs-step + .qs-step {
-    padding-left: 0;
-    padding-top: 1.5rem;
-    border-left: none;
-    border-top: 1px solid var(--line);
+    padding-left: 0; padding-top: 1.5rem;
+    border-left: none; border-top: 1px solid var(--line);
   }
   .skill-card { min-height: auto; }
 }
@@ -453,92 +499,55 @@ footer .right { display: flex; gap: 1.5rem; }
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand"><span class="dot"></span>JOAN'S SKILLS</div>
-    <div class="meta">千图AI · 增长工具 · v1.0</div>
+    <div class="meta" id="metaBar">千图AI · 增长工具 · 加载中…</div>
   </div>
 </div>
 
 <main>
 
+  <!-- HERO(从 skills.json.site 渲染) -->
   <section class="hero">
     <div class="hero-tag">
       AI SKILLS <span class="sep">/</span> 千图AI 增长 <span class="sep">/</span> 内部工具
     </div>
-    <h1>让 demo 和 PRD<br>少花<em>三小时</em></h1>
-    <p class="hero-sub">
-      给千图系 demo 加交付外壳、把需求文档一键发到飞书立项中 ——
-      用 skill 把每次评审前重复做的格式对齐、命名规范、字段校验自动化。
-    </p>
+    <h1 id="heroTitle">加载中…</h1>
+    <p class="hero-sub" id="heroDesc"></p>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="num">1</div>
-        <div class="label">SKILL ONLINE</div>
+        <div class="num" id="statCount">—</div>
+        <div class="label">SKILLS ONLINE</div>
       </div>
       <div class="hero-stat">
-        <div class="num">4</div>
-        <div class="label">适用产品</div>
-      </div>
-      <div class="hero-stat">
-        <div class="num">8</div>
-        <div class="label">章节</div>
+        <div class="num" id="statLatest">—</div>
+        <div class="label">最近更新</div>
       </div>
       <div class="hero-stat">
         <div class="num">0</div>
         <div class="label">外部依赖</div>
       </div>
+      <div class="hero-stat">
+        <div class="num">∞</div>
+        <div class="label">可扩展</div>
+      </div>
     </div>
   </section>
 
+  <!-- Skill 列表 -->
   <div class="section-head">
-    <span class="idx">01 / 02</span>
-    <h2>Skill</h2>
+    <span class="idx" id="skillsCountLabel">— SKILLS</span>
+    <h2>Skill 列表</h2>
     <span class="right">SKILLS</span>
   </div>
 
-  <div class="skills">
-
-    <div class="skill-card s-amber">
-      <div class="skill-head">
-        <span class="skill-num">SKILL 01</span>
-        <span class="skill-tag">DEMO · POLISH</span>
-      </div>
-      <div class="skill-name">qiantu-demo-polish</div>
-      <h3 class="skill-title">给 demo 一层<br>交付外壳</h3>
-      <p class="skill-desc">
-        千图系 HTML demo 完成后的最后一步：页面顶部加 <strong>PRD 横幅</strong>，
-        改动区域加 <strong>hover 逻辑卡片</strong>。样式锁死，禁止自由发挥 ——
-        让每个 demo 拿出去都是「带说明书的可交付物」。
-      </p>
-      <ul class="skill-features">
-        <li><strong>三色 pill 固定：</strong>背景蓝、目的绿、目标琥珀</li>
-        <li><strong>样式强制锁定：</strong>色值 / 渐变 / 动画都不允许改</li>
-        <li><strong>写法对照：</strong>需求目标必须量化，禁空话</li>
-        <li><strong>自动判位：</strong>逻辑卡贴在最显眼的改动区</li>
-      </ul>
-      <div class="skill-actions">
-        <a class="btn primary" href="./qiantu-demo-polish.html">
-          查看介绍 <span class="arrow">→</span>
-        </a>
-        <a class="btn ghost" href="./qiantu-demo-polish-skill.zip" download>
-          ↓ 下载 Skill
-        </a>
-      </div>
-    </div>
-
-    <div class="skill-card placeholder">
-      <div class="placeholder-ico">+</div>
-      <div class="placeholder-title">下一个 skill</div>
-      <div class="placeholder-desc">
-        飞书发布、其他增长工具陆续加入。<br>说一句话就能上线。
-      </div>
-      <div class="placeholder-tag">COMING SOON</div>
-    </div>
-
+  <div class="skills-grid" id="skillsGrid">
+    <div class="loading">读取 skills.json 中…</div>
   </div>
 
+  <!-- 使用步骤 -->
   <div class="section-head">
-    <span class="idx">02 / 02</span>
+    <span class="idx">QUICKSTART</span>
     <h2>怎么用</h2>
-    <span class="right">QUICKSTART</span>
+    <span class="right">3 STEPS</span>
   </div>
 
   <div class="quickstart">
@@ -546,21 +555,21 @@ footer .right { display: flex; gap: 1.5rem; }
       <div class="qs-num">STEP 01</div>
       <div class="qs-title">下载 skill 包</div>
       <div class="qs-desc">
-        点上方 skill 卡片的「下载 Skill」按钮，得到 <code>.zip</code> 压缩包。
+        点 skill 卡片的「下载 Skill」按钮,得到 <code>.zip</code> 压缩包。
       </div>
     </div>
     <div class="qs-step">
       <div class="qs-num">STEP 02</div>
       <div class="qs-title">放入 skills 目录</div>
       <div class="qs-desc">
-        解压后整个文件夹放入 AI 工具的 skills 目录，例如 <code>~/.claude/skills/</code>。
+        解压后整个文件夹放入 AI 工具的 skills 目录,例如 <code>~/.claude/skills/</code>。
       </div>
     </div>
     <div class="qs-step">
       <div class="qs-num">STEP 03</div>
       <div class="qs-title">说触发词</div>
       <div class="qs-desc">
-        说出对应触发词（如「给 demo 加需求板块」），AI 自动激活 skill。
+        说出对应触发词,AI 自动激活 skill。
       </div>
     </div>
   </div>
@@ -568,12 +577,138 @@ footer .right { display: flex; gap: 1.5rem; }
   <footer>
     <div>© 2026 · Joan · 千图AI 增长</div>
     <div class="right">
-      <span>v1.0 · 2026-05-13</span>
-      <span>single HTML · zero dep</span>
+      <span id="footerVersion">v1.0</span>
+      <span>single HTML · zero dep · git-deployed</span>
     </div>
   </footer>
 
 </main>
+
+<script>
+/* ============================================
+   渲染逻辑:从 skills.json 拉数据,渲染整个页面
+   ============================================ */
+(async function() {
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+  // hero_title 允许 <em> 标签作为强调
+  function renderHeroTitle(s) {
+    if (s == null) return '';
+    // 先转义,再放开 <em> 标签
+    return escapeHtml(s)
+      .replace(/&lt;em&gt;/g, '<em>')
+      .replace(/&lt;\/em&gt;/g, '</em>');
+  }
+
+  try {
+    const res = await fetch('./skills.json?ts=' + Date.now());
+    if (!res.ok) throw new Error('skills.json HTTP ' + res.status);
+    const data = await res.json();
+    const skills = Array.isArray(data.skills) ? data.skills.slice() : [];
+
+    // 按 order 排序,没 order 的放最后
+    skills.sort((a, b) => {
+      const ao = a.order == null ? 999 : a.order;
+      const bo = b.order == null ? 999 : b.order;
+      return ao - bo;
+    });
+
+    // 站点信息
+    if (data.site) {
+      if (data.site.hero_title) {
+        document.getElementById('heroTitle').innerHTML = renderHeroTitle(data.site.hero_title);
+      }
+      if (data.site.hero_desc) {
+        document.getElementById('heroDesc').textContent = data.site.hero_desc;
+      }
+      if (data.site.subtitle) {
+        document.getElementById('metaBar').textContent = data.site.subtitle;
+      }
+    }
+
+    // 统计
+    document.getElementById('statCount').textContent = skills.length;
+    if (skills.length > 0) {
+      const latest = skills
+        .map(s => s.updated_at || s.published_at)
+        .filter(Boolean)
+        .sort()
+        .pop();
+      document.getElementById('statLatest').textContent = latest || '—';
+    }
+
+    document.getElementById('skillsCountLabel').textContent =
+      String(skills.length).padStart(2, '0') + ' / ∞';
+
+    if (data.meta && data.meta.version) {
+      document.getElementById('footerVersion').textContent = 'v' + data.meta.version;
+    }
+
+    // 渲染卡片
+    const grid = document.getElementById('skillsGrid');
+    grid.innerHTML = '';
+
+    skills.forEach((s, i) => {
+      const card = document.createElement('div');
+      const color = s.color || 'blue';
+      card.className = 'skill-card c-' + color;
+
+      const features = Array.isArray(s.features) ? s.features : [];
+      const featuresHtml = features.map(f =>
+        '<li>' + escapeHtml(f) + '</li>'
+      ).join('');
+
+      const num = String(i + 1).padStart(2, '0');
+
+      card.innerHTML = `
+        <div class="skill-head">
+          <span class="skill-num">SKILL ${num}</span>
+          <span class="skill-tag">${escapeHtml(s.category || '')}</span>
+        </div>
+        <div class="skill-id">${escapeHtml(s.id || '')}</div>
+        <h3 class="skill-title">${escapeHtml(s.title || s.id || '未命名 Skill')}</h3>
+        <p class="skill-desc">${escapeHtml(s.desc || '')}</p>
+        ${featuresHtml ? `<ul class="skill-features">${featuresHtml}</ul>` : ''}
+        ${s.trigger ? `<div class="skill-trigger">${escapeHtml(s.trigger)}</div>` : ''}
+        <div class="skill-actions">
+          <a class="btn primary" href="${escapeHtml(s.intro_url || '#')}">
+            查看介绍 <span class="arrow">→</span>
+          </a>
+          <a class="btn ghost" href="${escapeHtml(s.package_url || '#')}" download>
+            ↓ 下载 Skill
+          </a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // 如果是奇数张卡片,补一张 placeholder 占位
+    if (skills.length % 2 === 1) {
+      const ph = document.createElement('div');
+      ph.className = 'skill-card placeholder';
+      ph.innerHTML = `
+        <div class="placeholder-ico">+</div>
+        <div class="placeholder-title">下一个 skill</div>
+        <div class="placeholder-desc">说一句「帮我把这个 skill 发布上线」,新卡片自动加进来。</div>
+        <div class="placeholder-tag">COMING SOON</div>
+      `;
+      grid.appendChild(ph);
+    }
+  } catch (e) {
+    console.error('Failed to load skills:', e);
+    document.getElementById('skillsGrid').innerHTML =
+      '<div class="loading">读取 skills.json 失败:' + escapeHtml(e.message) + '</div>';
+    document.getElementById('heroTitle').textContent = '加载失败';
+  }
+})();
+</script>
 
 </body>
 </html>

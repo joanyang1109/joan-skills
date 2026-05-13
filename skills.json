@@ -1,0 +1,33 @@
+{
+  "site": {
+    "title": "Joan's Skills",
+    "subtitle": "千图AI · 增长工具 · 内部 skill 站",
+    "hero_title": "让重复的事<em>少做一次</em>",
+    "hero_desc": "Joan 在千图AI 做增长过程中沉淀的 AI skills —— 每一个都解决一个具体的重复劳动:格式对齐、字段校验、自动发布、流程串接。说一句触发词,AI 自动跑完。"
+  },
+  "skills": [
+    {
+      "id": "qiantu-demo-polish",
+      "order": 1,
+      "color": "amber",
+      "category": "DEMO · POLISH",
+      "title": "给 demo 一层交付外壳",
+      "desc": "千图系 HTML demo 完成后的最后一步:页面顶部加 PRD 横幅,改动区域加 hover 逻辑卡片。样式锁死,禁止自由发挥 —— 让每个 demo 拿出去都是「带说明书的可交付物」。",
+      "features": [
+        "三色 pill 固定:背景蓝、目的绿、目标琥珀",
+        "样式强制锁定:色值 / 渐变 / 动画不允许改",
+        "写法对照:需求目标必须量化,禁空话",
+        "自动判位:逻辑卡贴在最显眼的改动区"
+      ],
+      "trigger": "给 demo 加需求板块和逻辑卡片",
+      "intro_url": "./intros/qiantu-demo-polish.html",
+      "package_url": "./packages/qiantu-demo-polish.zip",
+      "published_at": "2026-05-13",
+      "updated_at": "2026-05-13"
+    }
+  ],
+  "meta": {
+    "version": "1.0",
+    "last_updated": "2026-05-13"
+  }
+}
