@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joan's Skills · 千图AI 增长工具</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060a14;
+  --bg-2: #0c1120;
+  --bg-3: #131a2e;
+  --line: rgba(120,160,220,.14);
+  --text: #e7ecf5;
+  --text-dim: #8a96b0;
+  --text-mute: #5a6478;
+  --blue: #4f7fff;
+  --blue-2: #6ea3ff;
+  --amber: #f59e0b;
+  --amber-2: #fbbf24;
+  --green: #00d4a4;
+  --purple: #a78bfa;
+  --font-disp: 'Sora','Noto Sans SC',sans-serif;
+  --font-body: 'Space Grotesk','Noto Sans SC',sans-serif;
+  --font-mono: 'JetBrains Mono',monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+body {
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(79,127,255,.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 60%, rgba(245,158,11,.10) 0%, transparent 50%),
+    var(--bg);
+  min-height: 100vh;
+}
+
+.topbar {
+  position: sticky; top: 0;
+  background: rgba(6,10,20,.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  z-index: 100;
+  padding: 14px clamp(1.5rem, 4vw, 3rem);
+}
+.topbar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .06em;
+  color: var(--text-mute);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.topbar-inner .brand {
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.topbar-inner .brand .dot {
+  display: inline-block; width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--amber);
+  margin-right: 8px;
+  box-shadow: 0 0 10px var(--amber);
+}
+.topbar-inner .meta { color: var(--text-mute); text-transform: uppercase; }
+
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem);
+}
+
+.hero {
+  padding-bottom: clamp(3rem, 7vw, 6rem);
+  border-bottom: 1px solid var(--line);
+}
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 1vw, 13px);
+  letter-spacing: .14em;
+  color: var(--blue-2);
+  text-transform: uppercase;
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+.hero-tag .sep { color: var(--text-mute); margin: 0 8px; }
+.hero h1 {
+  font-family: var(--font-disp);
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--amber) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-sub {
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+  color: var(--text-dim);
+  max-width: 720px;
+  line-height: 1.6;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding-top: clamp(1.5rem, 2.5vw, 2rem);
+  border-top: 1px solid var(--line);
+  max-width: 860px;
+}
+.hero-stat .num {
+  font-family: var(--font-disp);
+  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1;
+}
+.hero-stat .label {
+  font-family: var(--font-mono);
+  font-size: clamp(10px, .85vw, 12px);
+  color: var(--text-mute);
+  letter-spacing: .06em;
+  margin-top: .5rem;
+  text-transform: uppercase;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  margin-top: clamp(3rem, 6vw, 5rem);
+  padding-bottom: clamp(1rem, 1.5vw, 1.25rem);
+  border-bottom: 1px solid var(--line);
+}
+.section-head .idx {
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 1vw, 13px);
+  color: var(--amber-2);
+  letter-spacing: .1em;
+}
+.section-head h2 {
+  font-family: var(--font-disp);
+  font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  flex: 1;
+}
+.section-head .right {
+  font-family: var(--font-mono);
+  font-size: clamp(10px, .85vw, 12px);
+  color: var(--text-mute);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.skills {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 2rem);
+}
+.skill-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 480px;
+  transition: transform .3s ease, border-color .3s ease;
+}
+.skill-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 5px;
+}
+.skill-card.s-amber::before {
+  background: linear-gradient(90deg, var(--amber), var(--amber-2), #ff8c42);
+}
+.skill-card:hover { transform: translateY(-4px); }
+.skill-card.s-amber:hover { border-color: rgba(245,158,11,.4); }
+
+.skill-card.placeholder {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--line);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: .75rem;
+  display: flex;
+  flex-direction: column;
+}
+.skill-card.placeholder:hover {
+  transform: none;
+  border-color: var(--text-mute);
+}
+.placeholder-ico {
+  font-size: 28px;
+  color: var(--text-mute);
+  margin-bottom: .5rem;
+}
+.placeholder-title {
+  font-family: var(--font-disp);
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.placeholder-desc {
+  font-size: clamp(.85rem, 1vw, .95rem);
+  color: var(--text-mute);
+  line-height: 1.55;
+  max-width: 280px;
+}
+.placeholder-tag {
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .1em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--bg-3);
+  color: var(--text-mute);
+  text-transform: uppercase;
+}
+
+.skill-head {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: 1.25rem;
+}
+.skill-num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: 5px 11px;
+  border-radius: 6px;
+}
+.s-amber .skill-num {
+  background: rgba(245,158,11,.15);
+  color: var(--amber-2);
+}
+.skill-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--text-mute);
+  text-transform: uppercase;
+}
+.skill-name {
+  font-family: var(--font-mono);
+  font-size: clamp(.95rem, 1.2vw, 1.1rem);
+  color: var(--amber-2);
+  margin-bottom: .85rem;
+  word-break: break-all;
+}
+.skill-title {
+  font-family: var(--font-disp);
+  font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+.skill-desc {
+  font-size: clamp(.92rem, 1.1vw, 1.02rem);
+  color: var(--text-dim);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+.skill-desc strong { color: var(--text); font-weight: 600; }
+
+.skill-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.75rem;
+  display: grid;
+  gap: .6rem;
+}
+.skill-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+  font-size: clamp(.85rem, 1vw, .95rem);
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.skill-features li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-top: .55em;
+}
+.s-amber .skill-features li::before { background: var(--amber); }
+.skill-features li strong { color: var(--text); font-weight: 600; }
+
+.skill-actions {
+  margin-top: auto;
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .75rem 1.25rem;
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: clamp(.82rem, .95vw, .92rem);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .2s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.btn.primary { color: #fff; }
+.s-amber .btn.primary {
+  background: linear-gradient(135deg, var(--amber), var(--amber-2));
+  box-shadow: 0 4px 14px rgba(245,158,11,.3);
+  color: #2a1a00;
+}
+.s-amber .btn.primary:hover {
+  box-shadow: 0 6px 20px rgba(245,158,11,.45);
+  transform: translateY(-1px);
+}
+.btn.ghost {
+  color: var(--text-dim);
+  background: transparent;
+  border-color: var(--line);
+}
+.btn.ghost:hover {
+  color: var(--text);
+  border-color: var(--text-mute);
+  background: var(--bg-3);
+}
+.btn .arrow { transition: transform .2s ease; }
+.btn:hover .arrow { transform: translateX(3px); }
+
+.quickstart {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+.qs-step { position: relative; }
+.qs-step + .qs-step {
+  padding-left: clamp(1.5rem, 3vw, 2.5rem);
+  border-left: 1px solid var(--line);
+}
+.qs-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--amber-2);
+  margin-bottom: .75rem;
+  text-transform: uppercase;
+}
+.qs-title {
+  font-family: var(--font-disp);
+  font-size: clamp(1.1rem, 1.4vw, 1.25rem);
+  font-weight: 700;
+  margin-bottom: .65rem;
+}
+.qs-desc {
+  font-size: clamp(.85rem, 1vw, .95rem);
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.qs-desc code {
+  font-family: var(--font-mono);
+  background: var(--bg-3);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: .9em;
+  color: var(--amber-2);
+}
+
+footer {
+  margin-top: clamp(3rem, 6vw, 5rem);
+  padding-top: clamp(1.5rem, 2.5vw, 2rem);
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-mute);
+  letter-spacing: .04em;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+footer .right { display: flex; gap: 1.5rem; }
+
+@media (max-width: 900px) {
+  .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+  .skills { grid-template-columns: 1fr; }
+  .quickstart { grid-template-columns: 1fr; }
+  .qs-step + .qs-step {
+    padding-left: 0;
+    padding-top: 1.5rem;
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+  .skill-card { min-height: auto; }
+}
+@media (max-width: 480px) {
+  .hero-stats { grid-template-columns: 1fr; }
+  .skill-actions { flex-direction: column; }
+  .btn { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="dot"></span>JOAN'S SKILLS</div>
+    <div class="meta">千图AI · 增长工具 · v1.0</div>
+  </div>
+</div>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-tag">
+      AI SKILLS <span class="sep">/</span> 千图AI 增长 <span class="sep">/</span> 内部工具
+    </div>
+    <h1>让 demo 和 PRD<br>少花<em>三小时</em></h1>
+    <p class="hero-sub">
+      给千图系 demo 加交付外壳、把需求文档一键发到飞书立项中 ——
+      用 skill 把每次评审前重复做的格式对齐、命名规范、字段校验自动化。
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">1</div>
+        <div class="label">SKILL ONLINE</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">4</div>
+        <div class="label">适用产品</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">8</div>
+        <div class="label">章节</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">0</div>
+        <div class="label">外部依赖</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-head">
+    <span class="idx">01 / 02</span>
+    <h2>Skill</h2>
+    <span class="right">SKILLS</span>
+  </div>
+
+  <div class="skills">
+
+    <div class="skill-card s-amber">
+      <div class="skill-head">
+        <span class="skill-num">SKILL 01</span>
+        <span class="skill-tag">DEMO · POLISH</span>
+      </div>
+      <div class="skill-name">qiantu-demo-polish</div>
+      <h3 class="skill-title">给 demo 一层<br>交付外壳</h3>
+      <p class="skill-desc">
+        千图系 HTML demo 完成后的最后一步：页面顶部加 <strong>PRD 横幅</strong>，
+        改动区域加 <strong>hover 逻辑卡片</strong>。样式锁死，禁止自由发挥 ——
+        让每个 demo 拿出去都是「带说明书的可交付物」。
+      </p>
+      <ul class="skill-features">
+        <li><strong>三色 pill 固定：</strong>背景蓝、目的绿、目标琥珀</li>
+        <li><strong>样式强制锁定：</strong>色值 / 渐变 / 动画都不允许改</li>
+        <li><strong>写法对照：</strong>需求目标必须量化，禁空话</li>
+        <li><strong>自动判位：</strong>逻辑卡贴在最显眼的改动区</li>
+      </ul>
+      <div class="skill-actions">
+        <a class="btn primary" href="./qiantu-demo-polish.html">
+          查看介绍 <span class="arrow">→</span>
+        </a>
+        <a class="btn ghost" href="./qiantu-demo-polish-skill.zip" download>
+          ↓ 下载 Skill
+        </a>
+      </div>
+    </div>
+
+    <div class="skill-card placeholder">
+      <div class="placeholder-ico">+</div>
+      <div class="placeholder-title">下一个 skill</div>
+      <div class="placeholder-desc">
+        飞书发布、其他增长工具陆续加入。<br>说一句话就能上线。
+      </div>
+      <div class="placeholder-tag">COMING SOON</div>
+    </div>
+
+  </div>
+
+  <div class="section-head">
+    <span class="idx">02 / 02</span>
+    <h2>怎么用</h2>
+    <span class="right">QUICKSTART</span>
+  </div>
+
+  <div class="quickstart">
+    <div class="qs-step">
+      <div class="qs-num">STEP 01</div>
+      <div class="qs-title">下载 skill 包</div>
+      <div class="qs-desc">
+        点上方 skill 卡片的「下载 Skill」按钮，得到 <code>.zip</code> 压缩包。
+      </div>
+    </div>
+    <div class="qs-step">
+      <div class="qs-num">STEP 02</div>
+      <div class="qs-title">放入 skills 目录</div>
+      <div class="qs-desc">
+        解压后整个文件夹放入 AI 工具的 skills 目录，例如 <code>~/.claude/skills/</code>。
+      </div>
+    </div>
+    <div class="qs-step">
+      <div class="qs-num">STEP 03</div>
+      <div class="qs-title">说触发词</div>
+      <div class="qs-desc">
+        说出对应触发词（如「给 demo 加需求板块」），AI 自动激活 skill。
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div>© 2026 · Joan · 千图AI 增长</div>
+    <div class="right">
+      <span>v1.0 · 2026-05-13</span>
+      <span>single HTML · zero dep</span>
+    </div>
+  </footer>
+
+</main>
+
+</body>
+</html>

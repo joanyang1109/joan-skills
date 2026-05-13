@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>qiantu-demo-polish · 千图 demo 后处理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg-2: #15151c;
+  --bg-3: #1e1e28;
+  --line: rgba(255,200,140,.12);
+  --line-2: rgba(255,200,140,.06);
+  --text: #f4ecd8;
+  --text-dim: #b5aa90;
+  --text-mute: #6e6552;
+  --accent: #f59e0b;       /* 琥珀主色：对应 PRD banner */
+  --accent-2: #fbbf24;
+  --accent-soft: rgba(245,158,11,.12);
+  --accent-line: rgba(245,158,11,.32);
+  --blue: #3b82f6;          /* 需求背景 pill */
+  --green: #45b035;         /* 需求目的 pill */
+  --pink: #f06292;
+  --font-disp: 'Sora','Noto Sans SC',sans-serif;
+  --font-body: 'Space Grotesk','Noto Sans SC',sans-serif;
+  --font-mono: 'JetBrains Mono',monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%;
+  overflow-x: hidden; overflow-y: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+body::-webkit-scrollbar { width: 0; }
+
+.slide {
+  position: relative;
+  width: 100%;
+  height: 100vh; height: 100dvh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  display: grid;
+  align-content: center;
+  padding: clamp(1.5rem, 4vw, 4rem) clamp(1.5rem, 5vw, 5rem);
+}
+.slide-inner {
+  width: 100%; max-width: 1280px;
+  margin: 0 auto;
+  max-height: 88dvh;
+}
+.slide h1, .slide h2, .slide h3 {
+  font-family: var(--font-disp);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.progress-bar {
+  position: fixed; left: 0; top: 0; height: 3px;
+  width: 0; z-index: 9999;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width .2s linear;
+}
+
+.slide-meta {
+  position: absolute;
+  top: clamp(1rem, 2.5vw, 1.6rem);
+  left: clamp(1.5rem, 5vw, 5rem);
+  right: clamp(1.5rem, 5vw, 5rem);
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: clamp(10px, .85vw, 12px);
+  letter-spacing: .08em;
+  color: var(--text-mute);
+  text-transform: uppercase;
+}
+.slide-meta .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  display: inline-block; margin-right: 8px;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(.85); }
+}
+
+/* ==== 页 1: HERO ==== */
+.hero {
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(245,158,11,.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(251,191,36,.08) 0%, transparent 50%),
+    var(--bg);
+}
+.hero-grid {
+  display: grid; gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-content: center;
+}
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 1vw, 13px);
+  letter-spacing: .14em;
+  color: var(--accent-2);
+  text-transform: uppercase;
+}
+.hero-tag .sep { color: var(--text-mute); margin: 0 8px; }
+.hero h1 {
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 800;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--accent) 0%, #ff8c42 60%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-sub {
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  color: var(--text-dim);
+  max-width: 760px;
+  line-height: 1.55;
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-top: clamp(1.5rem, 2.5vw, 2rem);
+  border-top: 1px solid var(--line);
+  max-width: 860px;
+}
+.hero-stat .num {
+  font-family: var(--font-disp);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+}
+.hero-stat .label {
+  font-family: var(--font-mono);
+  font-size: clamp(10px, .85vw, 12px);
+  color: var(--text-mute);
+  letter-spacing: .06em;
+  margin-top: .5rem;
+  text-transform: uppercase;
+}
+
+.section-head {
+  display: flex; align-items: baseline; gap: clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: clamp(1rem, 1.5vw, 1.25rem);
+  border-bottom: 1px solid var(--line);
+}
+.section-head .idx {
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 1vw, 13px);
+  color: var(--accent);
+  letter-spacing: .1em;
+}
+.section-head h2 {
+  font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+  flex: 1;
+}
+.section-head .right {
+  font-family: var(--font-mono);
+  font-size: clamp(10px, .85vw, 12px);
+  color: var(--text-mute);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* ==== 页 2: 干了什么 ==== */
+.two-things {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+.thing-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  position: relative;
+  overflow: hidden;
+}
+.thing-card .badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent-2);
+  margin-bottom: 1rem;
+}
+.thing-card h3 {
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  margin-bottom: .75rem;
+  color: var(--text);
+}
+.thing-card p {
+  font-size: clamp(.9rem, 1.1vw, 1rem);
+  line-height: 1.65;
+  color: var(--text-dim);
+  margin-bottom: 1.25rem;
+}
+.thing-card .preview {
+  background: var(--bg-3);
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-dim);
+}
+
+/* PRD Banner 复刻 */
+.banner-preview {
+  background: linear-gradient(135deg, rgba(180,83,9,.18) 0%, rgba(255,246,220,.07) 50%, rgba(180,83,9,.12) 100%);
+  border: 1px solid rgba(245,158,11,.25);
+  border-radius: 10px;
+  padding: .75rem .9rem;
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  align-items: center;
+}
+.bp-meta {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--accent);
+  width: 100%;
+  letter-spacing: .04em;
+  margin-bottom: 4px;
+}
+.bp-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #fff;
+  font-family: var(--font-disp);
+}
+.bp-pill.bg { background: linear-gradient(145deg, #3b82f6, #1e62d0); }
+.bp-pill.aim { background: linear-gradient(145deg, #45b035, #2d8a22); }
+.bp-pill.goal { background: linear-gradient(145deg, #f59e0b, #d97706); }
+
+/* logic card 模拟 */
+.logic-preview {
+  background: #1a2236;
+  border: 1px solid rgba(130,180,230,.22);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #dce9f5;
+  position: relative;
+}
+.logic-preview .lc-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: #7dd3fc;
+  margin-bottom: 7px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(130,180,230,.18);
+  display: flex; align-items: center; gap: 5px;
+}
+.logic-preview .lc-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #7dd3fc;
+}
+.logic-preview .lc-section {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #94d3a2;
+  letter-spacing: .04em;
+  margin: 6px 0 2px;
+  text-transform: uppercase;
+}
+.logic-preview ul { padding-left: 12px; }
+.logic-preview li { font-size: 10.5px; margin: 1px 0; color: #dce9f5; }
+.logic-preview code {
+  background: rgba(255,255,255,.12);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 9.5px;
+  color: #fbbf24;
+}
+
+/* ==== 页 3: 三色 pill ==== */
+.pills-layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+.pill-detail {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+  position: relative;
+  overflow: hidden;
+}
+.pill-detail::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+}
+.pill-detail.bg::before { background: linear-gradient(90deg, #3b82f6, #1e62d0); }
+.pill-detail.aim::before { background: linear-gradient(90deg, #45b035, #2d8a22); }
+.pill-detail.goal::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+
+.pill-detail .pd-head {
+  display: flex; align-items: center; gap: .8rem;
+  margin-bottom: 1.1rem;
+}
+.pill-detail .pd-icon {
+  font-size: 22px;
+}
+.pill-detail .pd-name {
+  font-family: var(--font-disp);
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  font-weight: 800;
+  color: var(--text);
+}
+.pill-detail .pd-color {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .06em;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.pill-detail.bg .pd-color { background: rgba(59,130,246,.15); color: #6ea3ff; }
+.pill-detail.aim .pd-color { background: rgba(69,176,53,.15); color: #6dca5c; }
+.pill-detail.goal .pd-color { background: rgba(245,158,11,.15); color: var(--accent-2); }
+.pill-detail .pd-rules {
+  list-style: none; padding: 0;
+}
+.pill-detail .pd-rules li {
+  font-size: clamp(.82rem, 1vw, .92rem);
+  line-height: 1.6;
+  color: var(--text-dim);
+  padding: .35rem 0;
+  display: flex; gap: .55rem;
+  align-items: flex-start;
+}
+.pill-detail .pd-rules li::before {
+  content: '·';
+  flex-shrink: 0;
+  font-weight: 700;
+}
+.pill-detail.bg .pd-rules li::before { color: #6ea3ff; }
+.pill-detail.aim .pd-rules li::before { color: #6dca5c; }
+.pill-detail.goal .pd-rules li::before { color: var(--accent-2); }
+.pill-detail .pd-rules strong { color: var(--text); font-weight: 600; }
+.pill-detail .pd-bad {
+  margin-top: .9rem;
+  padding: .65rem .85rem;
+  background: rgba(240,98,146,.06);
+  border-left: 2px solid var(--pink);
+  border-radius: 6px;
+  font-size: clamp(.75rem, .9vw, .85rem);
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.pill-detail .pd-bad strong { color: var(--pink); }
+
+/* ==== 页 4: 锁死的约束 ==== */
+.locked-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+.locked-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: clamp(1.25rem, 2vw, 1.6rem);
+  display: flex; flex-direction: column;
+  gap: .85rem;
+}
+.locked-card .locked-tag {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--accent);
+  padding: 4px 10px;
+  border: 1px solid var(--accent-line);
+  border-radius: 4px;
+  width: fit-content;
+}
+.locked-card h3 {
+  font-size: clamp(1rem, 1.35vw, 1.2rem);
+  color: var(--text);
+}
+.locked-card p {
+  font-size: clamp(.82rem, 1vw, .92rem);
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.locked-card .specs {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+  background: var(--bg-3);
+  padding: .6rem .8rem;
+  border-radius: 6px;
+  line-height: 1.7;
+}
+.locked-card .specs .k { color: var(--accent-2); }
+.warn-strip {
+  margin-top: clamp(1.5rem, 2.5vw, 2rem);
+  padding: 1rem 1.3rem;
+  background: rgba(240,98,146,.06);
+  border-left: 3px solid var(--pink);
+  border-radius: 8px;
+  font-size: clamp(.85rem, 1vw, .95rem);
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.warn-strip strong { color: var(--pink); }
+.warn-strip code {
+  font-family: var(--font-mono);
+  background: var(--bg-3);
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--accent-2);
+  font-size: .9em;
+}
+
+/* ==== 页 5: 写作约束 ==== */
+.writing {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+.writing-block {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: clamp(1.1rem, 1.8vw, 1.5rem);
+}
+.writing-block .w-head {
+  display: flex; align-items: center; gap: .65rem;
+  margin-bottom: 1rem;
+  padding-bottom: .85rem;
+  border-bottom: 1px solid var(--line-2);
+}
+.writing-block .w-head .ico {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  font-size: 16px;
+}
+.writing-block.bg .w-head .ico { background: rgba(59,130,246,.15); color: #6ea3ff; }
+.writing-block.aim .w-head .ico { background: rgba(69,176,53,.15); color: #6dca5c; }
+.writing-block.goal .w-head .ico { background: rgba(245,158,11,.15); color: var(--accent-2); }
+.writing-block .w-head .name {
+  font-family: var(--font-disp);
+  font-size: clamp(.95rem, 1.2vw, 1.1rem);
+  font-weight: 700;
+  color: var(--text);
+}
+.writing-block .w-head .lim {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-mute);
+}
+.example {
+  margin: .6rem 0;
+  font-size: clamp(.78rem, .92vw, .87rem);
+  line-height: 1.5;
+}
+.example .lbl {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-right: 6px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  vertical-align: middle;
+}
+.example.good .lbl { background: rgba(0,212,164,.15); color: var(--green); }
+.example.bad .lbl { background: rgba(240,98,146,.15); color: var(--pink); }
+.example.good { color: var(--text); }
+.example.bad { color: var(--text-mute); text-decoration: line-through; text-decoration-color: rgba(240,98,146,.5); }
+
+/* ==== 页 6: 默认动作 ==== */
+.steps-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(.75rem, 1.5vw, 1.25rem);
+}
+.step-block {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+  display: flex; flex-direction: column;
+  gap: .75rem;
+}
+.step-block .si {
+  font-family: var(--font-mono);
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+.step-block .st {
+  font-family: var(--font-disp);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  font-weight: 700;
+  color: var(--text);
+}
+.step-block .sd {
+  font-size: clamp(.8rem, .95vw, .9rem);
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.step-block .stag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent-2);
+  width: fit-content;
+  margin-top: auto;
+}
+
+/* ==== 页 7: 触发与边界 ==== */
+.trigger-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+.trigger-card, .boundary-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: clamp(1.25rem, 2vw, 1.8rem);
+}
+.trigger-card { border-top: 3px solid var(--green); }
+.boundary-card { border-top: 3px solid var(--pink); }
+.trigger-card h3, .boundary-card h3 {
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: .6rem;
+}
+.scope-tags, .trigger-tags {
+  display: flex; flex-wrap: wrap; gap: .5rem;
+  margin-bottom: 1rem;
+}
+.trigger-tag {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  padding: 5px 11px;
+  border-radius: 6px;
+  background: rgba(69,176,53,.1);
+  color: var(--green);
+  border: 1px solid rgba(69,176,53,.25);
+}
+.scope-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--bg-3);
+  color: var(--text-dim);
+  border: 1px solid var(--line);
+}
+.trigger-desc {
+  font-size: clamp(.85rem, 1vw, .95rem);
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.boundary-list { list-style: none; padding: 0; }
+.boundary-list li {
+  padding: .35rem 0;
+  font-size: clamp(.85rem, 1vw, .95rem);
+  color: var(--text-dim);
+  display: flex; gap: .65rem;
+  align-items: flex-start;
+}
+.boundary-list li::before {
+  content: '✗';
+  color: var(--pink);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ==== 页 8: 收尾 ==== */
+.end {
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(245,158,11,.16) 0%, transparent 60%),
+    var(--bg);
+}
+.end h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  margin-bottom: 1.5rem;
+}
+.end h2 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--accent), #ff8c42);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.end p {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  color: var(--text-dim);
+  max-width: 720px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+.end-meta {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding-top: clamp(1.5rem, 2.5vw, 2rem);
+  border-top: 1px solid var(--line);
+  margin-top: clamp(1rem, 2vw, 1.5rem);
+  justify-content: start;
+}
+.end-meta .key {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+.end-meta .val {
+  font-family: var(--font-disp);
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  font-weight: 700;
+  color: var(--text);
+}
+.end-cmd {
+  display: inline-flex;
+  align-items: center;
+  gap: .8rem;
+  font-family: var(--font-mono);
+  background: var(--bg-2);
+  border: 1px solid var(--accent-line);
+  border-radius: 10px;
+  padding: .85rem 1.4rem;
+  color: var(--accent-2);
+  font-size: clamp(.9rem, 1.05vw, 1rem);
+  margin-top: 1rem;
+}
+.end-cmd::before { content: '$'; color: var(--green); font-weight: 700; }
+
+/* 移动端 */
+@media (max-width: 900px) {
+  .hero h1 { font-size: clamp(2.2rem, 11vw, 4rem); }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .two-things, .trigger-layout { grid-template-columns: 1fr; }
+  .pills-layout, .locked-grid, .writing, .steps-flow { grid-template-columns: 1fr 1fr; }
+  .end-meta { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+}
+@media (max-width: 480px) {
+  .pills-layout, .locked-grid, .writing, .steps-flow, .hero-stats { grid-template-columns: 1fr; }
+  .slide-meta { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ============ 页 1: HERO ============ -->
+<section class="slide hero">
+  <div class="slide-meta">
+    <div><span class="dot"></span>SKILL · DEMO · POLISH</div>
+    <div>v1.0 · 2026-05-13</div>
+  </div>
+  <div class="slide-inner hero-grid">
+    <div class="hero-tag">
+      AI SKILL <span class="sep">/</span> 千图系 demo <span class="sep">/</span> 后处理
+    </div>
+    <h1>给 demo<br>一层<em>交付外壳</em></h1>
+    <p class="hero-sub">
+      千图系 HTML demo 完成后的最后一步：页面顶部加 PRD 横幅，改动区域加 hover 逻辑卡片。
+      样式锁死，禁止自由发挥 —— 让每个 demo 拿出去都是「带说明书的可交付物」。
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">2</div>
+        <div class="label">默认动作</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">3</div>
+        <div class="label">需求 Pill</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">4</div>
+        <div class="label">适用产品</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">0</div>
+        <div class="label">允许改色值</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 页 2: 默认做两件事 ============ -->
+<section class="slide">
+  <div class="slide-meta">
+    <div><span class="dot"></span>01 · WHAT</div>
+    <div>默认做两件事</div>
+  </div>
+  <div class="slide-inner">
+    <div class="section-head">
+      <span class="idx">01 / 08</span>
+      <h2>默认做两件事，自动判位，不用你指</h2>
+      <span class="right">DEFAULT ACTIONS</span>
+    </div>
+    <div class="two-things">
+      <div class="thing-card">
+        <span class="badge">ACTION 01</span>
+        <h3>顶部加 PRD 横幅</h3>
+        <p>
+          在页面 <strong style="color:var(--text)">导航上方</strong>插入独立 PRD Banner，
+          不被 fixed / sticky 导航遮挡。
+          含三色胶囊：需求背景、需求目的、需求目标，hover 出详情卡片。
+        </p>
+        <div class="banner-preview">
+          <div class="bp-meta">来源：本次需求 · P0 · 杨琼 · 2026-05-13</div>
+          <span class="bp-pill bg">📌 需求背景</span>
+          <span class="bp-pill aim">🎯 需求目的</span>
+          <span class="bp-pill goal">📊 需求目标</span>
+        </div>
+      </div>
+      <div class="thing-card">
+        <span class="badge">ACTION 02</span>
+        <h3>改动区加逻辑说明卡</h3>
+        <p>
+          在<strong style="color:var(--text)">本次修改区域</strong>自动加 hover 逻辑卡片。
+          位置由 skill 自动判断 — 优先改动最集中区块 → 视觉最显眼处 → 与需求目标直接相关区域。
+        </p>
+        <div class="logic-preview">
+          <div class="lc-title"><span class="lc-dot"></span>🛒 充值页新增 AI VIP 商品</div>
+          <div class="lc-section">调整点</div>
+          <ul>
+            <li>新增 <code>AI_VIP_M1</code> 月卡</li>
+            <li>保留原有素材会员入口</li>
+          </ul>
+          <div class="lc-section">保留项</div>
+          <ul>
+            <li>权益块、对账逻辑不变</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 页 3: 三个 pill ============ -->
+<section class="slide">
+  <div class="slide-meta">
+    <div><span class="dot"></span>02 · PILLS</div>
+    <div>三色 pill</div>
+  </div>
+  <div class="slide-inner">
+    <div class="section-head">
+      <span class="idx">02 / 08</span>
+      <h2>需求板块 = 背景 · 目的 · 目标</h2>
+      <span class="right">FIXED 3 PILLS</span>
+    </div>
+    <div class="pills-layout">
+      <div class="pill-detail bg">
+        <div class="pd-head">
+          <div class="pd-icon">📌</div>
+          <div class="pd-name">需求背景</div>
+          <div class="pd-color">#3B82F6</div>
+        </div>
+        <ul class="pd-rules">
+          <li>只写 <strong>2-3 条</strong>，每条 1 句话</li>
+          <li>每条只讲一个现状事实或问题</li>
+          <li>用「当前 / 现有 / 用户在 ...」开头</li>
+          <li>结论性现状，<strong>不写散文铺垫</strong></li>
+        </ul>
+        <div class="pd-bad">
+          <strong>禁止：</strong>「随着…的发展」「为了…」「基于…调研」这类散文式开头
+        </div>
+      </div>
+      <div class="pill-detail aim">
+        <div class="pd-head">
+          <div class="pd-icon">🎯</div>
+          <div class="pd-name">需求目的</div>
+          <div class="pd-color">#45B035</div>
+        </div>
+        <ul class="pd-rules">
+          <li>只写 <strong>1 句话</strong>，不超过 30 字</li>
+          <li>只回答「为什么做这件事」</li>
+          <li>一个核心动词 + 一个核心结果</li>
+          <li>禁实现细节、技术方案、过程</li>
+        </ul>
+        <div class="pd-bad">
+          <strong>禁止：</strong>「通过 A 来达到 B」的复合句，拆成结果句
+        </div>
+      </div>
+      <div class="pill-detail goal">
+        <div class="pd-head">
+          <div class="pd-icon">📊</div>
+          <div class="pd-name">需求目标</div>
+          <div class="pd-color">#F59E0B</div>
+        </div>
+        <ul class="pd-rules">
+          <li>只写 <strong>1-2 条</strong>，优先 1 条</li>
+          <li><strong>必须量化</strong>：数值 / 可测交付 / 0→1 判定</li>
+          <li>无业务数据 → 写「待评审后填入」+ 可衡量结果</li>
+        </ul>
+        <div class="pd-bad">
+          <strong>禁止空话：</strong>「提升体验」「优化表达」「增强感知」「提高效果」
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 页 4: 样式锁死 ============ -->
+<section class="slide">
+  <div class="slide-meta">
+    <div><span class="dot"></span>03 · LOCKED</div>
+    <div>样式强制锁定</div>
+  </div>
+  <div class="slide-inner">
+    <div class="section-head">
+      <span class="idx">03 / 08</span>
+      <h2>样式锁死，只换文案</h2>
+      <span class="right">STYLE LOCK</span>
+    </div>
+    <div class="locked-grid">
+      <div class="locked-card">
+        <div class="locked-tag">⊘ LOCKED</div>
+        <h3>三色不变</h3>
+        <p>背景 → 蓝、目的 → 绿、目标 → 琥珀，禁止改色值、渐变方向、阴影参数。</p>
+        <div class="specs">
+          <span class="k">bg</span> #3B82F6 → #1E62D0<br>
+          <span class="k">aim</span> #45B035 → #2D8A22<br>
+          <span class="k">goal</span> #F59E0B → #D97706
+        </div>
+      </div>
+      <div class="locked-card">
+        <div class="locked-tag">⊘ LOCKED</div>
+        <h3>Emoji 不变</h3>
+        <p>三个 pill 的图标固定为 📌 🎯 📊，顺序固定为「背景 → 目的 → 目标」，不允许新增、删除、重排。</p>
+        <div class="specs">
+          <span class="k">order</span> 📌 → 🎯 → 📊
+        </div>
+      </div>
+      <div class="locked-card">
+        <div class="locked-tag">⊘ LOCKED</div>
+        <h3>定位逻辑不变</h3>
+        <p>Hover 卡片用 fixed 定位 + JS 自动放置，不允许自改定位、动画时长、过渡曲线。</p>
+        <div class="specs">
+          <span class="k">card</span> position: fixed<br>
+          <span class="k">trans</span> .2s cubic-bezier
+        </div>
+      </div>
+    </div>
+    <div class="warn-strip">
+      <strong>原则：</strong>CSS / HTML / JS 是<strong>标准模板</strong>，原样复制，
+      只允许替换 <code>{{占位符}}</code> 中的业务文案。需求板块在 PRD banner，逻辑卡在 <code>.logic-zone</code>。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 页 5: 写作示例 ============ -->
+<section class="slide">
+  <div class="slide-meta">
+    <div><span class="dot"></span>04 · WRITING</div>
+    <div>写法约束 · 好坏对照</div>
+  </div>
+  <div class="slide-inner">
+    <div class="section-head">
+      <span class="idx">04 / 08</span>
+      <h2>写法对照：长什么样算合格</h2>
+      <span class="right">WRITING RULES</span>
+    </div>
+    <div class="writing">
+      <div class="writing-block bg">
+        <div class="w-head">
+          <div class="ico">📌</div>
+          <div class="name">需求背景</div>
+          <div class="lim">≤ 3 条</div>
+        </div>
+        <div class="example good">
+          <span class="lbl">GOOD</span>当前 AI VIP 在充值页无独立入口，用户从素材会员页跳转流失率高。
+        </div>
+        <div class="example bad">
+          <span class="lbl">BAD</span>随着 AIGC 浪潮发展，用户对 AI 工具的需求日益增长……
+        </div>
+      </div>
+      <div class="writing-block aim">
+        <div class="w-head">
+          <div class="ico">🎯</div>
+          <div class="name">需求目的</div>
+          <div class="lim">1 句 ≤ 30 字</div>
+        </div>
+        <div class="example good">
+          <span class="lbl">GOOD</span>让 AI VIP 直接在充值页可购，缩短转化路径。
+        </div>
+        <div class="example bad">
+          <span class="lbl">BAD</span>通过新增 AI VIP 商品入口来提升用户对 AI 能力的感知，从而……
+        </div>
+      </div>
+      <div class="writing-block goal">
+        <div class="w-head">
+          <div class="ico">📊</div>
+          <div class="name">需求目标</div>
+          <div class="lim">必须量化</div>
+        </div>
+        <div class="example good">
+          <span class="lbl">GOOD</span>AI VIP 月卡周转化率 ≥ 1.2%（评审后调整数值）。
+        </div>
+        <div class="example bad">
+          <span class="lbl">BAD</span>提升 AI VIP 充值的用户体验和转化效果。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 页 6: 默认动作流程 ============ -->
+<section class="slide">
+  <div class="slide-meta">
+    <div><span class="dot"></span>05 · FLOW</div>
+    <div>默认动作流程</div>
+  </div>
+  <div class="slide-inner">
+    <div class="section-head">
+      <span class="idx">05 / 08</span>
+      <h2>默认走四步，不需要你指位置</h2>
+      <span class="right">PIPELINE</span>
+    </div>
+    <div class="steps-flow">
+      <div class="step-block">
+        <div class="si">01</div>
+        <div class="st">读 demo</div>
+        <div class="sd">识别页面导航、主内容区和本次主要改动区域</div>
+        <div class="stag">READ</div>
+      </div>
+      <div class="step-block">
+        <div class="si">02</div>
+        <div class="st">顶部插 banner</div>
+        <div class="sd">PRD 横幅插到导航上方，不被 fixed nav 遮挡</div>
+        <div class="stag">INJECT TOP</div>
+      </div>
+      <div class="step-block">
+        <div class="si">03</div>
+        <div class="st">改动区插逻辑卡</div>
+        <div class="sd">自动判位，多个核心改动区可分别加，避免全页滥加</div>
+        <div class="stag">INJECT INLINE</div>
+      </div>
+      <div class="step-block">
+        <div class="si">04</div>
+        <div class="st">保留原结构</div>
+        <div class="sd">不改商品、不删数据块，不主动改业务文案</div>
+        <div class="stag">PRESERVE</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 页 7: 触发 & 边界 ============ -->
+<section class="slide">
+  <div class="slide-meta">
+    <div><span class="dot"></span>06 · TRIGGER &amp; SCOPE</div>
+    <div>什么时候用 · 不替你做什么</div>
+  </div>
+  <div class="slide-inner">
+    <div class="section-head">
+      <span class="idx">06 / 08</span>
+      <h2>触发词 &amp; 适用范围</h2>
+      <span class="right">SCOPE</span>
+    </div>
+    <div class="trigger-layout">
+      <div class="trigger-card">
+        <h3>✓ 触发场景</h3>
+        <div class="trigger-tags">
+          <span class="trigger-tag">添加需求板块</span>
+          <span class="trigger-tag">补需求背景目的目标</span>
+          <span class="trigger-tag">加逻辑说明卡片</span>
+          <span class="trigger-tag">给 demo 做交付包装</span>
+        </div>
+        <div class="trigger-desc" style="margin-top:1rem;">
+          适用产品：
+        </div>
+        <div class="scope-tags" style="margin-top:.6rem;">
+          <span class="scope-tag">千图AI</span>
+          <span class="scope-tag">千图主站</span>
+          <span class="scope-tag">千图企业站</span>
+          <span class="scope-tag">千图智能设计</span>
+        </div>
+        <div class="trigger-desc" style="margin-top:1rem;">
+          仅适用于<strong style="color:var(--text)">已完成主体页面</strong>的 HTML demo，
+          负责交付说明，不重做主体业务。
+        </div>
+      </div>
+      <div class="boundary-card">
+        <h3>⊘ 边界</h3>
+        <ul class="boundary-list">
+          <li>不主动改商品结构、权益内容</li>
+          <li>不主动改主业务文案</li>
+          <li>不删除线上原有数据块 / 模型块</li>
+          <li>不加 HTML / CSS / JS 注释（模板自带保留）</li>
+          <li>不另起新类名（用模板类名）</li>
+          <li>不重做主体页面</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 页 8: 收尾 ============ -->
+<section class="slide end">
+  <div class="slide-meta">
+    <div><span class="dot"></span>END</div>
+    <div>2026-05-13 · skill v1.0</div>
+  </div>
+  <div class="slide-inner">
+    <div class="section-head" style="border:none;padding-bottom:0;margin-bottom:1rem;">
+      <span class="idx">08 / 08</span>
+      <span class="right">GET STARTED</span>
+    </div>
+    <h2>主体 demo 做完<br>剩下<em>交给 skill</em></h2>
+    <p>
+      你只写需求背景 / 目的 / 目标三句话，
+      其他的 skill 一键搞定：横幅、逻辑卡、位置、样式、字段、约束 ——
+      交付出去的每个 demo 自带说明书。
+    </p>
+    <div class="end-cmd">给这个 demo 加需求板块和逻辑卡片</div>
+    <div class="end-meta">
+      <div>
+        <div class="key">SKILL</div>
+        <div class="val">qiantu-demo-polish</div>
+      </div>
+      <div>
+        <div class="key">SCOPE</div>
+        <div class="val">千图AI · 主站 · 企业 · 智能设计</div>
+      </div>
+      <div>
+        <div class="key">DEFAULT</div>
+        <div class="val">PRD banner + logic card</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const bar = document.getElementById('progressBar');
+const slides = document.querySelectorAll('.slide');
+function updateProgress() {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = max > 0 ? (scrollTop / max) * 100 : 0;
+  bar.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+let currentSlide = 0;
+function goToSlide(i) {
+  i = Math.max(0, Math.min(slides.length - 1, i));
+  currentSlide = i;
+  slides[i].scrollIntoView({ behavior: 'smooth' });
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+    e.preventDefault(); goToSlide(currentSlide + 1);
+  } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+    e.preventDefault(); goToSlide(currentSlide - 1);
+  } else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+  else if (e.key === 'End') { e.preventDefault(); goToSlide(slides.length - 1); }
+});
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(en => {
+    if (en.isIntersecting && en.intersectionRatio > 0.5) {
+      currentSlide = Array.from(slides).indexOf(en.target);
+    }
+  });
+}, { threshold: [0.5] });
+slides.forEach(s => io.observe(s));
+
+let touchStartY = 0;
+document.addEventListener('touchstart', (e) => {
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+document.addEventListener('touchend', (e) => {
+  const delta = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(delta) < 50) return;
+  if (delta > 0) goToSlide(currentSlide + 1);
+  else goToSlide(currentSlide - 1);
+}, { passive: true });
+</script>
+</body>
+</html>
