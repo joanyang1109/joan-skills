@@ -9,20 +9,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #060a14;
-  --bg-2: #0c1120;
-  --bg-3: #131a2e;
-  --line: rgba(120,160,220,.14);
-  --text: #e7ecf5;
-  --text-dim: #8a96b0;
-  --text-mute: #5a6478;
-  --blue: #4f7fff;
-  --blue-2: #6ea3ff;
-  --amber: #f59e0b;
-  --amber-2: #fbbf24;
-  --green: #00d4a4;
-  --purple: #a78bfa;
-  --pink: #f06292;
+  --bg: #fafaf7;
+  --bg-2: #ffffff;
+  --bg-3: #f1f1ec;
+  --line: rgba(20,30,50,.10);
+  --line-strong: rgba(20,30,50,.16);
+  --text: #1a1f2e;
+  --text-dim: #4a5266;
+  --text-mute: #8892a6;
+  --blue: #2563eb;
+  --blue-2: #3b82f6;
+  --amber: #d97706;
+  --amber-2: #f59e0b;
+  --green: #059669;
+  --purple: #7c3aed;
+  --pink: #db2777;
+  --shadow-sm: 0 1px 2px rgba(20,30,50,.06), 0 1px 3px rgba(20,30,50,.08);
+  --shadow-md: 0 4px 12px rgba(20,30,50,.06), 0 2px 6px rgba(20,30,50,.04);
+  --shadow-lg: 0 12px 32px rgba(20,30,50,.08), 0 4px 12px rgba(20,30,50,.05);
   --font-disp: 'Sora','Noto Sans SC',sans-serif;
   --font-body: 'Space Grotesk','Noto Sans SC',sans-serif;
   --font-mono: 'JetBrains Mono',monospace;
@@ -37,15 +41,15 @@ html, body {
 }
 body {
   background:
-    radial-gradient(ellipse at 15% 10%, rgba(79,127,255,.10) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 60%, rgba(245,158,11,.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 10%, rgba(37,99,235,.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 60%, rgba(217,119,6,.04) 0%, transparent 50%),
     var(--bg);
   min-height: 100vh;
 }
 
 .topbar {
   position: sticky; top: 0;
-  background: rgba(6,10,20,.85);
+  background: rgba(250,250,247,.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
@@ -67,7 +71,7 @@ body {
   display: inline-block; width: 7px; height: 7px;
   border-radius: 50%; background: var(--blue);
   margin-right: 8px;
-  box-shadow: 0 0 10px var(--blue);
+  box-shadow: 0 0 8px rgba(37,99,235,.45);
   animation: pulse 2.4s ease-in-out infinite;
 }
 @keyframes pulse {
@@ -88,7 +92,7 @@ main {
   font-family: var(--font-mono);
   font-size: clamp(11px, 1vw, 13px);
   letter-spacing: .14em;
-  color: var(--blue-2);
+  color: var(--blue);
   text-transform: uppercase;
   margin-bottom: clamp(1rem, 2vw, 1.5rem);
 }
@@ -107,6 +111,7 @@ main {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  font-weight: 900;
 }
 .hero-sub {
   font-size: clamp(1rem, 1.5vw, 1.3rem);
@@ -149,7 +154,7 @@ main {
 .section-head .idx {
   font-family: var(--font-mono);
   font-size: clamp(11px, 1vw, 13px);
-  color: var(--blue-2);
+  color: var(--blue);
   letter-spacing: .1em;
 }
 .section-head h2 {
@@ -183,7 +188,11 @@ main {
   overflow: hidden;
   display: flex; flex-direction: column;
   min-height: 480px;
-  transition: transform .3s ease, border-color .3s ease;
+  box-shadow: var(--shadow-md);
+  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.skill-card:not(.placeholder):hover {
+  box-shadow: var(--shadow-lg);
 }
 .skill-card::before {
   content: '';
@@ -198,11 +207,11 @@ main {
 .skill-card.c-purple::before { background: linear-gradient(90deg, var(--purple), #c4b5fd, #8b5cf6); }
 
 .skill-card:hover { transform: translateY(-4px); }
-.skill-card.c-amber:hover { border-color: rgba(245,158,11,.4); }
-.skill-card.c-blue:hover { border-color: rgba(79,127,255,.4); }
-.skill-card.c-green:hover { border-color: rgba(0,212,164,.4); }
-.skill-card.c-pink:hover { border-color: rgba(240,98,146,.4); }
-.skill-card.c-purple:hover { border-color: rgba(167,139,250,.4); }
+.skill-card.c-amber:hover { border-color: rgba(217,119,6,.35); }
+.skill-card.c-blue:hover { border-color: rgba(37,99,235,.35); }
+.skill-card.c-green:hover { border-color: rgba(5,150,105,.35); }
+.skill-card.c-pink:hover { border-color: rgba(219,39,119,.35); }
+.skill-card.c-purple:hover { border-color: rgba(124,58,237,.35); }
 
 /* placeholder 卡片(预留新 skill 位置) */
 .skill-card.placeholder {
@@ -259,11 +268,11 @@ main {
   padding: 5px 11px;
   border-radius: 6px;
 }
-.c-amber .skill-num { background: rgba(245,158,11,.15); color: var(--amber-2); }
-.c-blue .skill-num { background: rgba(79,127,255,.15); color: var(--blue-2); }
-.c-green .skill-num { background: rgba(0,212,164,.15); color: var(--green); }
-.c-pink .skill-num { background: rgba(240,98,146,.15); color: var(--pink); }
-.c-purple .skill-num { background: rgba(167,139,250,.15); color: var(--purple); }
+.c-amber .skill-num { background: rgba(217,119,6,.12); color: var(--amber); }
+.c-blue .skill-num { background: rgba(37,99,235,.12); color: var(--blue); }
+.c-green .skill-num { background: rgba(5,150,105,.12); color: var(--green); }
+.c-pink .skill-num { background: rgba(219,39,119,.12); color: var(--pink); }
+.c-purple .skill-num { background: rgba(124,58,237,.12); color: var(--purple); }
 
 .skill-tag {
   font-family: var(--font-mono);
@@ -278,8 +287,8 @@ main {
   margin-bottom: .85rem;
   word-break: break-all;
 }
-.c-amber .skill-id { color: var(--amber-2); }
-.c-blue .skill-id { color: var(--blue-2); }
+.c-amber .skill-id { color: var(--amber); }
+.c-blue .skill-id { color: var(--blue); }
 .c-green .skill-id { color: var(--green); }
 .c-pink .skill-id { color: var(--pink); }
 .c-purple .skill-id { color: var(--purple); }
@@ -369,26 +378,24 @@ main {
 .btn.primary { color: #fff; }
 .c-amber .btn.primary {
   background: linear-gradient(135deg, var(--amber), var(--amber-2));
-  box-shadow: 0 4px 14px rgba(245,158,11,.3);
-  color: #2a1a00;
+  box-shadow: 0 4px 14px rgba(217,119,6,.25);
+  color: #fff;
 }
 .c-blue .btn.primary {
   background: linear-gradient(135deg, var(--blue), var(--blue-2));
-  box-shadow: 0 4px 14px rgba(79,127,255,.3);
+  box-shadow: 0 4px 14px rgba(37,99,235,.25);
 }
 .c-green .btn.primary {
-  background: linear-gradient(135deg, var(--green), #38e1b8);
-  box-shadow: 0 4px 14px rgba(0,212,164,.3);
-  color: #002b22;
+  background: linear-gradient(135deg, var(--green), #10b981);
+  box-shadow: 0 4px 14px rgba(5,150,105,.25);
 }
 .c-pink .btn.primary {
-  background: linear-gradient(135deg, var(--pink), #f48fb1);
-  box-shadow: 0 4px 14px rgba(240,98,146,.3);
+  background: linear-gradient(135deg, var(--pink), #ec4899);
+  box-shadow: 0 4px 14px rgba(219,39,119,.25);
 }
 .c-purple .btn.primary {
-  background: linear-gradient(135deg, var(--purple), #c4b5fd);
-  box-shadow: 0 4px 14px rgba(167,139,250,.3);
-  color: #1a0b3d;
+  background: linear-gradient(135deg, var(--purple), #8b5cf6);
+  box-shadow: 0 4px 14px rgba(124,58,237,.25);
 }
 .btn.primary:hover {
   transform: translateY(-1px);
@@ -425,7 +432,7 @@ main {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: .1em;
-  color: var(--blue-2);
+  color: var(--blue);
   margin-bottom: .75rem;
   text-transform: uppercase;
 }
@@ -446,7 +453,7 @@ main {
   padding: 2px 7px;
   border-radius: 4px;
   font-size: .9em;
-  color: var(--blue-2);
+  color: var(--blue);
 }
 
 footer {
