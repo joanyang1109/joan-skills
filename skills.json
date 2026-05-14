@@ -24,10 +24,29 @@
       "package_url": "./packages/qiantu-demo-polish.zip",
       "published_at": "2026-05-13",
       "updated_at": "2026-05-13"
+    },
+    {
+      "id": "审核skill",
+      "order": 2,
+      "color": "blue",
+      "category": "AUDIT · DESIGN-DIRECTOR",
+      "title": "给作品审核一个设计总监",
+      "desc": "OGC / UGC 设计师作品的 AI 审核工具。从接口拉队列 → AI 按规范+审美判 → 本地 HTML 复审面板批量过审 → 回写接口。强约束:价格 = 审美门槛、套图一起判、字体严标、医美豁免、token 失效绝不降级到样例。",
+      "features": [
+        "价格门槛:底价严审 / UGC 宽审",
+        "一次列全:驳回不许只挑一个问题",
+        "套图绑定:一套要么全过要么全驳",
+        "字体严标:键盘打的都要标记"
+      ],
+      "trigger": "审一批 OGC",
+      "intro_url": "./intros/审核skill.html",
+      "package_url": "./packages/审核skill.zip",
+      "published_at": "2026-05-14",
+      "updated_at": "2026-05-14"
     }
   ],
   "meta": {
     "version": "1.0",
-    "last_updated": "2026-05-13"
+    "last_updated": "2026-05-14"
   }
 }
