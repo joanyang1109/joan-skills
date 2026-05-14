@@ -119,6 +119,18 @@ html::-webkit-scrollbar { width: 0; }
   text-transform: uppercase;
 }
 .hero-tag .sep { color: var(--text-mute); margin: 0 8px; }
+.skill-name {
+  font-family: var(--font-mono);
+  font-size: clamp(.95rem, 1.2vw, 1.15rem);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: .04em;
+  padding: .4rem .9rem;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: 6px;
+  width: fit-content;
+}
 .hero h1 {
   font-size: clamp(3rem, 8vw, 7rem);
   font-weight: 800;
@@ -593,6 +605,7 @@ html::-webkit-scrollbar { width: 0; }
     <div class="hero-tag">
       AI SKILL <span class="sep">/</span> 千图作品审核 <span class="sep">/</span> 设计总监视角
     </div>
+    <div class="skill-name">审核skill</div>
     <h1>给作品审核<br>一个<em>设计总监</em></h1>
     <p class="hero-sub">
       OGC / UGC 设计师作品的 AI 审核工具。从接口拉队列 → AI 按规范+审美判 → 本地 HTML 复审面板批量过审 → 回写接口。
