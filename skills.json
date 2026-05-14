@@ -43,6 +43,63 @@
       "package_url": "./packages/审核skill.zip",
       "published_at": "2026-05-14",
       "updated_at": "2026-05-14"
+    },
+    {
+      "id": "qiantu-ai",
+      "order": 3,
+      "color": "green",
+      "category": "DEMO · AI 站",
+      "title": "千图 AI + 智能设计 demo",
+      "desc": "千图AI(ai.58pic.com)和智能设计(canvas.58pic.com)的还原工具。从真实前端源文件组装 HTML demo,class 名和 CSS 变量与生产代码直接对应,可交付前端开发使用。",
+      "features": [
+        "源文件组装:不从零生成,直接读取前端真实模块",
+        "双产品线:千图AI 荧光绿 + 智能设计点阵浅灰",
+        "双主题:深色和浅色都覆盖",
+        "可交付:class 名跟线上代码对得上"
+      ],
+      "trigger": "做个千图AI风格的 demo",
+      "intro_url": "./intros/qiantu-ai.html",
+      "package_url": "./packages/qiantu-ai.zip",
+      "published_at": "2026-05-14",
+      "updated_at": "2026-05-14"
+    },
+    {
+      "id": "qiantu-main",
+      "order": 4,
+      "color": "purple",
+      "category": "DEMO · 主站",
+      "title": "千图主站 demo",
+      "desc": "千图主站(58pic.com)的还原工具。从真实前端源文件组装 HTML demo,涵盖搜索结果页、素材详情页、首页 17 个区块和会员购买页,class 名和 CSS 变量直接对应生产代码。",
+      "features": [
+        "17 个首页区块全覆盖:从 logo 到工作流",
+        "完整购买流:用户信息 / 企业切换 / 会员购买",
+        "搜索 + 详情双核心页面",
+        "品牌色 #00B277 锁死,圆角搜索框还原"
+      ],
+      "trigger": "做个千图主站的 demo",
+      "intro_url": "./intros/qiantu-main.html",
+      "package_url": "./packages/qiantu-main.zip",
+      "published_at": "2026-05-14",
+      "updated_at": "2026-05-14"
+    },
+    {
+      "id": "qiantu-qiye",
+      "order": 5,
+      "color": "pink",
+      "category": "DEMO · 企业站",
+      "title": "千图企业站 demo",
+      "desc": "千图企业站(qiye.58pic.com)的还原工具。包含首页、定价页、充值弹窗三个核心页面的完整源文件,深色工作台和浅色营销页两套主题不可混用。",
+      "features": [
+        "深色工作台:#1980FF 蓝 + #141414 底",
+        "浅色营销页:#FA5555 红 + 渐变背景",
+        "3 个核心页面:首页 / 定价 / 充值弹窗",
+        "两套主题严格分离,不可混用"
+      ],
+      "trigger": "做个千图企业站的 demo",
+      "intro_url": "./intros/qiantu-qiye.html",
+      "package_url": "./packages/qiantu-qiye.zip",
+      "published_at": "2026-05-14",
+      "updated_at": "2026-05-14"
     }
   ],
   "meta": {
