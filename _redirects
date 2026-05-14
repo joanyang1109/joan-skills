@@ -1,2 +1,2 @@
-# 所有下载链接 302 到腾讯云（包的权威位置已在 p.58pic.com）
-/packages/* https://p.58pic.com/packages/:splat 302
+# 所有下载链接 302 到腾讯云（包的权威位置已在 p.58pic.com/joan-skills/）
+/packages/* https://p.58pic.com/joan-skills/packages/:splat 302
